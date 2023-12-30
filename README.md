@@ -33,7 +33,7 @@ def find_similar_movies(movie_id, genre=None):
 
 ```
 
-<h3>Narrow down 10% or more of movies users liked that are similar to us (the search input)</h3>
+<h3>Narrow down 10% or more of movies users liked that are similar to us</h3>
 This is to prevent a return of all movies that other users liked that also liked our movie
 
 ```
