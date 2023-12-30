@@ -63,7 +63,7 @@ If similar and all are similarly rated, they are less likely to be recommended. 
     rec_perc["score"] = rec_perc["similar"] / rec_perc["all"]
 ```
 
-<h3>Return Top 10 Recommendations from this algorithm</h3>
+<h3>Return Top 10 Recommendations from this score</h3>
 
 ```
     rec_perc = rec_perc.sort_values("score", ascending=False)
