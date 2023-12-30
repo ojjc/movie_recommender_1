@@ -132,8 +132,16 @@ def main():
 
     else:
         st.subheader('About')
+        st.write(
+            """
+            This movie recommendation app leverages a content-based recommendation system to provide dynamic movie suggestions based on user-inputted movie titles and genres. 
+            Enhance your movie-watching experience by exploring personalized recommendations tailored to your preferences.
 
-        st.write
+            **GitHub Repository:**
+            [Movie Recommender App](https://github.com/ojjc/movie_recommender_1)
+
+            """
+        )
 
 if __name__ == '__main__':
     main()
