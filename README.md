@@ -20,6 +20,8 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 ```
 
+To run it, call `streamlit run rec-sys.py`
+
 <h2>How does Movie Recommendation work?</h2>
 <h3>Find the users who rated a movie (movie_id) and liked it (>3.5/5.0). From that, find the movies they also liked</h3>
 
