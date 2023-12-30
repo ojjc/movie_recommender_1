@@ -4,18 +4,20 @@ movies = pd.read_csv('25m\\movies.csv')
 ratings = pd.read_csv('25m\\ratings.csv')
 
 def clean_title(title):
-    # for the case of "Avengers, The (2012)" type of format
-    match = re.search(r'^(.*), The \((\d{4})\)$', title)
+    # for the case of "Avengers, The (2012)" or "Bug's Life, A (1998)" or a similar type of format in the Dataset
+    # this would rearrange to "The Avengers 2012" or "A Bug's Life 1998"
+    match = re.search(r'^(.*), (The|A) \((\d{4})\)$', title)
     if match:
         movie_title = match.group(1)
         year = match.group(2)
         return f"The {movie_title} {year}"
-    # handle normally
+    # handle normally, in which remove only parantheses around the year as that can impact searching
     return re.sub("[^a-zA-Z0-9 ]", "", title)
 
 def rearrange_title(title):
     # for the case of "Avengers, The (2012)" type of format
     # or "Bug's Life, A (1998)"
+    # DON'T REMOVE PARANTHESES AROUND YEAR
     match = re.search(r'^(.*), (The|A) \((\d{4})\)$', title)
     if match:
         article = match.group(2)
@@ -79,7 +81,7 @@ def find_similar_movies(movie_id, genre=None):
     rec_perc = pd.concat([similar_user_recs, all_users_recs], axis=1)
     rec_perc.columns = ["similar", "all"]
 
-    # Consider the genre similarity and adjust the score
+    # consider the genre similarity and adjust the score
     rec_perc["score"] = rec_perc["similar"] / rec_perc["all"]
     if genre and genre != "Any":
         genre_bonus = 1 - abs(movies_genre["cleaned_genres"].apply(lambda x: fuzz.ratio(str(x), str(genre))) / 100)
@@ -106,23 +108,32 @@ def main():
             with n2:
                 genre_term = st.selectbox("Genre", unique_genres)
             with n3:
-                st.text("Search")
+                st.text("Submit")
                 submit = st.form_submit_button(label="Search") 
 
 
         if submit:
-            if genre_term == "Any":
-                st.success("You searched for {}".format(search_term))
+            if not search_term:
+                st.error("Please enter a valid movie title and genre.")
             else:
-                st.success("You searched for {} and {}".format(search_term, genre_term))
-            results = search(search_term)
-            movie_id = results.iloc[0]["movieId"]
-            similar_movies = find_similar_movies(movie_id, genre_term)
-            similar_movies_styled = similar_movies.style.format({'rearranged_title': lambda x: f'<a href="https://www.google.com/search?q={x}" target="_blank">{x}</a>'}, escape='html')
-            st.markdown(similar_movies_styled.render(), unsafe_allow_html=True)
+                if genre_term == "Any":
+                    st.success(f"You searched for {search_term}")
+                else:
+                    st.success(f"You searched for {search_term} and {genre_term}")
+                results = search(search_term)
+                if not results.empty:
+                    movie_id = results.iloc[0]["movieId"]
+                    similar_movies = find_similar_movies(movie_id, genre_term)
+                    similar_movies_styled = similar_movies.style.format({'rearranged_title': lambda x: f'<a href="https://www.google.com/search?q={x}" target="_blank">{x}</a>'}, escape='html')
+                    st.markdown(similar_movies_styled.render(), unsafe_allow_html=True)
+                else:
+                    st.warning("No search results found. Please try a different movie title.")
+
 
     else:
         st.subheader('About')
+
+        st.write
 
 if __name__ == '__main__':
     main()
