@@ -7,7 +7,7 @@ Movie Recommendation App built using [StreamLit](https://streamlit.io/) for smoo
 
 <h3>Libraries Used</h3>
 
-- TfidfVectorizer to vectorize title (make text into numbers)
+- TfidfVectorizer to vectorize title (make text into numbers that allows for simpler comparing)
 - cosine_similarity for searching based on closest number that allows for a more robust searching method
 
 ```
