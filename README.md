@@ -4,6 +4,22 @@ Based on dataset from [MovieLens](https://grouplens.org/datasets/movielens/25m/)
 
 Movie Recommendation App built using [StreamLit](https://streamlit.io/) for smooth and simple UI experience. It includes various functions for cleaning and processing movie data, as well as a recommendation system based on user inputted Movie Title and Genre (or lack thereof)
 
+
+<h3>Libraries Used</h3>
+
+- TfidfVectorizer to vectorize title (make text into numbers)
+- cosine_similarity for searching based on closest number that allows for a more robust searching method
+
+```
+import pandas as pd
+import numpy as np
+import re
+from fuzzywuzzy import fuzz
+import streamlit as st
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+```
+
 <h2>How does Movie Recommendation work?</h2>
 <h3>Find the users who rated a movie (movie_id) and liked it (>3.5/5.0). From that, find the movies they also liked</h3>
 
